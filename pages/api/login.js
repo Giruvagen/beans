@@ -1,6 +1,6 @@
 var beanDB = require('faunadb')
 
-const dbClient = new beanDB.Client({ secret: 'fnAEC0npRrACB3R46YTLOUi1u0mpTHRrAAMUxlPe' })
+const dbClient = new beanDB.Client({ secret: process.env.FKEY })
 const q = beanDB.query
 
 export default async (req, res) => {

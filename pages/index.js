@@ -17,7 +17,7 @@ function Home({ bean }) {
 }
 
 Home.getInitialProps = async(ctx) => {
-  const res = await fetch('http://localhost:3000/api/gettodaysbean')
+  const res = await fetch(process.env.API_URL + 'gettodaysbean')
   const json = await res.json()
   return { bean: json }
 }
