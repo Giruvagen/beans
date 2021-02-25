@@ -8,7 +8,7 @@ import initMiddleware from '../../lib/init-middleware'
 
 const cors = initMiddleware(
   Cors({
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST','PUT','OPTIONS'],
   })
 )
 
@@ -37,7 +37,6 @@ export default async (req, res) => {
       }
       break;
     case "PUT":
-      var alreadyExists = null
       try {
         data = await dbClient.query(
           q.Get(

@@ -5,7 +5,17 @@ const { v4: uuidv4 } = require('uuid')
 const dbClient = new beanDB.Client({ secret: process.env.FKEY })
 const q = beanDB.query
 
+import Cors from 'cors'
+import initMiddleware from '../../lib/init-middleware'
+
+const cors = initMiddleware(
+  Cors({
+    methods: ['GET', 'POST', 'OPTIONS'],
+  })
+)
+
 export default async (req, res) => {
+  await cors(req, res)
   var data = null
   try {
     data = await dbClient.query(
