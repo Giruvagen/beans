@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "apollo-client": "^2.6.10",
     "axios": "^0.21.1",
+    "cors": "^2.8.5",
     "faunadb": "^4.1.1",
     "js-cookie": "^2.2.1",
     "next": "10.0.7",
