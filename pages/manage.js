@@ -4,7 +4,7 @@ import { Router } from 'next/router'
 function Manage() {
     return (
         <div>
-            Manage
+            
         </div>
     )
 }
