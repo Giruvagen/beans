@@ -31,7 +31,6 @@ export default async (req, res) => {
       } catch {
         res.status(500).json({ msg: 'Login Failed' })
       }
-      
     } else {
       res.status(500).json({ msg: 'Invalid Password' })
     }

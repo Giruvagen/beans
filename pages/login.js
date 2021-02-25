@@ -14,7 +14,8 @@ function Login() {
             email: user,
             password: pass
         }
-        result = await axios.post(process.env.API_URL + '/login', data)
+        console.log(process.env.API_URL)
+        result = await axios.post(process.env.API_URL + 'login', data)
         if (result.Ok) {
             Cookies.set('beantoken', result.body.token)
             router.push('/manage')

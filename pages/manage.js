@@ -9,7 +9,7 @@ function Manage() {
     )
 }
 
-Manage.getInitialProps = () => {
+Manage.getInitialProps = async () => {
     const token = Cookies.get('beantoken')
     if (token) {
         const result = await axios.post(process.env.API_URL + 'token', { token: token })
