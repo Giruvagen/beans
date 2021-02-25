@@ -19,7 +19,7 @@ export default async (req, res) => {
     )
   } catch (e) {
     console.log(e)
-    res.status(500).json('Something Went Wrong!')
+    res.status(500).json({ Error: 'No Bean Found'})
     return
   }
   console.log(data)
