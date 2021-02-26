@@ -15,7 +15,9 @@ const cors = initMiddleware(
 )
 
 export default async (req, res) => {
+  console.log('p')
   await cors(req, res)
+  console.log('h')
   var data = null
   try {
     data = await dbClient.query(
