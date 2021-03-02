@@ -25,4 +25,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Setup Fauna Db
 
-The Project relies on the Fauna DB NoSQL DB service, details [here:](https://www.fauna.com)
+The Project relies on the Fauna DB NoSQL DB service, details [here.](https://www.fauna.com)
