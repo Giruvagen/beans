@@ -18,7 +18,9 @@ export default async (req, res) => {
         res.status(400).json({Error: 'Invalid Token'})
     }
 
-    if (token.ts + 900 < elapsed) {
+    console.log(token)
+
+    if (token.ts + 86400 < elapsed) {
         res.status(400).json({Error: 'Expired Token'})
     } else {
         res.status(200).json({msg: 'Valid Token'})

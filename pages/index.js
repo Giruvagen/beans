@@ -6,7 +6,7 @@ function Home({ bean }) {
   return (
     <>
       <div className="h-20 bg-gray-100 w-full text-center text-3xl p-4 text-green-700">The Bean Counter</div>
-      <div className="grid grid-cols-1 bg-gray-100 p-12 mx-auto w-1/3 rounded-xl mt-12 text-red-700">
+      { bean.Name > 0 && <div className="grid grid-cols-1 bg-gray-100 p-12 mx-auto w-1/3 rounded-xl mt-12 text-red-700">
         <div className="mx-auto my-auto text-2xl grid grid-cols-2">
           <h2 className="text-xl font-bold py-2 col-span-2 mb-4">Bean of the day for {bean.BeanDate}</h2>
           <FontAwesomeIcon icon={faCoffee} size="4x" className="" />
@@ -18,6 +18,10 @@ function Home({ bean }) {
           </ul>
         </div>
       </div>
+      }
+      { !bean.Name &&
+        <h2 className="text-xl font-bold py-2 col-span-2 mb-4 text-center text-red-700 mt-24">No Bean Found For Today</h2>
+      }
     </>
   )
 }

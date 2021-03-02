@@ -1,10 +1,29 @@
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 function Manage({ token, currentBeans }) {
     
     const router = useRouter()
+
+    const beans = { ...currentBeans }
+    
+    function beanReducer(state, action) {
+        switch (action.type) {
+            case 'add':
+                return { beans: state.beans.push(action.payload) }
+            case 'delete':
+                return { beans: state.beans.splice(state.beans.indexOf(action.payload),1) }
+            case 'update':
+                return
+            default:
+                return { beans: state.beans }
+        }
+    }
+
+    const [beanState, beanDispatch] = useReducer(beanReducer, { beans: beans })
 
     const [beanError, setBeanError] = useState('')
     const [beanData, setBeanData] = useState({
@@ -48,12 +67,14 @@ function Manage({ token, currentBeans }) {
                 setBeanError('Unable to save bean')
             }
         }
+        beanDispatch({ type: 'add', payload: beanData})
     }
 
-    const beanDelete = (e,beanId) => {
-        e.preventDefault()
+    const beanDelete = async (bean) => {
+        console.log(bean)
         try {
-            axios.delete(process.env.API_URL + 'managebeans', { beanId: beanId })
+            await axios.delete(process.env.API_URL + 'managebeans', { beanId: bean.ref.id })
+            beanDispatch({ type: 'delete', payload: bean })
         } catch (err) {
             setBeanError('Unable to save bean')
         }
@@ -85,11 +106,15 @@ function Manage({ token, currentBeans }) {
                  </div>
             </div>
             <h2 className="text-xl text-center">Current Beans</h2>
-            {currentBeans.data.map(cBean => {
+            {beans.data && beans.data.map(cBean => {
                 return (
-                <div className="mx-auto text-center m-12 bg-gray-100 w-2/3 rounded-xl p-2">
-                    {cBean.data.Name}
-                </div>)
+                  <>
+                    <div className="mx-auto text-center m-12 bg-gray-100 w-2/3 rounded-xl p-2">
+                            Name: {cBean.data.Name} Date: {cBean.data.BeanDate}
+                            <FontAwesomeIcon value={cBean} onClick={() => beanDelete(cBean)} className="float-right mx-2 my-1" icon={faTimes} />
+                    </div>
+                  </>
+                )
             })}
         </div>
     )
@@ -108,10 +133,10 @@ Manage.getInitialProps = async () => {
         if (result.status === 200) {
             return { token: true, currentBeans: currentBeans }
         } else {
-            return { token: false, currentBeans: currentBeans }
+            return { token: false, currentBeans: []}
         }
     } else {
-        return { token: false }
+        return { token: false, currentBeans: [] }
     }
 }
 

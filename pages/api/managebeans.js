@@ -49,7 +49,7 @@ export default async (req, res) => {
         res.status(500).json({Error: 'Bean already exists for that date'})
       }
       try {
-        dbClient.query(
+        await dbClient.query(
           q.Create(q.Collection("beans"), {
             data: req.body,
           })
@@ -60,6 +60,14 @@ export default async (req, res) => {
       }
       break;
     case "DELETE":
+      try {
+        await dbClient.query(
+          q.Delete(q.Ref(q.Collection('beans'), action.payload.Ref))
+        )
+        res.status(200).json({msg: 'Bean deleted'})
+      } catch (e) {
+        res.status(500).json({msg: 'Unable to delete bean'})
+      }
       break;
     default:
       res.status(500).json({ msg: "Method Not Supported" });

@@ -1,3 +1,5 @@
+import e from 'cors'
+
 var beanDB = require('faunadb')
 var crypto = require('crypto')
 
@@ -5,47 +7,32 @@ const dbClient = new beanDB.Client({ secret: process.env.FKEY })
 const q = beanDB.query
 
 export default async (req, res) => {
-    const body = req.body
-    try {
-            dbClient.query(
-            q.Get(
-                q.Match(q.Index('emailused'), body.email)
-            )
-        ).then(result => {
-            res.status(400).json({ error: 'User Already Exists' })
-            return
-        })
-    } catch (e) {
-        console.log(e)
-    }
-
-    var userCreated = null;
-
 
     var salt = getPassSalt()
-    var hashedPass = getPassHash(body.password, salt)
+    var hashedPass = getPassHash(req.body.password, salt)
 
-    body.password = hashedPass.hashPass
-    body.salt = hashedPass.salt
+    req.body.password = hashedPass.hashPass
+    req.body.salt = hashedPass.salt
 
     try {
-        userCreated = await dbClient.query(
+        await dbClient.query(
             q.Create(
                 q.Collection('users'),
                 {
-                    data: body   
+                    data: req.body
                 }
             )
         )
-    } catch {
-        userCreated = false
-    }
-    if (!userCreated) {
-        res.status(500).json({ error: 'Unable to Create User' })
-        return
-    } else {
         res.status(200).json({ message: 'User Created Successfully' })
         return
+    } catch (e) {
+        console.log(e)
+          if (e.message === "instance not unique") {
+              res.status(400).json({ error: 'User Already Exists' })
+              return
+          }
+          res.status(500).json({ error: 'Unable to Create User' })
+          return
     }
 }
 
